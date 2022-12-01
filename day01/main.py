@@ -2,6 +2,7 @@ import sys
 
 def calories(input: str) -> list[int]:
     calories: list[int] = [0]
+    
     for cal in input.splitlines():
         if cal == "":
             calories.append(0)
@@ -9,13 +10,14 @@ def calories(input: str) -> list[int]:
             last = calories.pop()
             last += int(cal)
             calories.append(last)
+
     return calories
 
-def part1(input: str) -> str:
+def part1(input: str) -> int:
     cals = calories(input)    
     return max(cals)
 
-def part2(input: str) -> str:
+def part2(input: str) -> int:
     cals = calories(input)
     return sum(sorted(cals)[-3:])
 
