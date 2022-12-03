@@ -18,7 +18,11 @@ def part1(input: str) -> int:
     return priorities(shared_items)
 
 def part2(input: str) -> int:
-    return 0
+    shared_items = []
+    rucksacks = iter(input.splitlines())
+    for r1, r2, r3 in zip(rucksacks, rucksacks, rucksacks):
+        shared_items.extend(set(r1).intersection(r2).intersection(r3))
+    return priorities(shared_items)
 
 if __name__ == '__main__':
     with open(sys.argv[1]) as f:
