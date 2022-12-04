@@ -1,12 +1,5 @@
 import sys
 
-def fully_contains(a, b, c, d) -> bool:
-    if a <= c and b >= d:
-        return True
-    elif a >= c and b <= d:
-        return True
-    return False
-
 def part1(input: str) -> int:
     overlap = 0
     for elve_tasks in input.splitlines():
@@ -14,7 +7,7 @@ def part1(input: str) -> int:
         [a, b], [c, d] = ab.split('-'), cd.split('-')
         a, b, c, d = int(a), int(b), int(c), int(d)
 
-        if fully_contains(a, b, c, d):
+        if a <= c <= d <= b or c <= a <= b <= d:
             overlap += 1
 
     return overlap
@@ -26,7 +19,7 @@ def part2(input: str) -> int:
         [a, b], [c, d] = ab.split('-'), cd.split('-')
         a, b, c, d = int(a), int(b), int(c), int(d)
 
-        if fully_contains(a, b, c, d):
+        if a <= c <= d <= b or c <= a <= b <= d:
             overlap += 1
         elif a <= c and c <= b <= d:
             overlap += 1
