@@ -21,9 +21,7 @@ def part2(input: str) -> int:
 
         if a <= c <= d <= b or c <= a <= b <= d:
             overlap += 1
-        elif a <= c and c <= b <= d:
-            overlap += 1
-        elif b >= d and d >= a >= c:
+        elif a <= c <= b <= d or c <= a <= d <= b:
             overlap += 1
 
     return overlap
