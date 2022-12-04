@@ -1,8 +1,8 @@
-import sys
+import os
 
 def calories(input: str) -> list[int]:
     calories: list[int] = [0]
-    
+
     for cal in input.splitlines():
         if cal == "":
             calories.append(0)
@@ -14,7 +14,7 @@ def calories(input: str) -> list[int]:
     return calories
 
 def part1(input: str) -> int:
-    cals = calories(input)    
+    cals = calories(input)
     return max(cals)
 
 def part2(input: str) -> int:
@@ -22,7 +22,11 @@ def part2(input: str) -> int:
     return sum(sorted(cals)[-3:])
 
 if __name__ == '__main__':
-    with open(sys.argv[1]) as f:
-        input = f.read()
-        print(part1(input))
-        print(part2(input))
+    dir = os.path.dirname(__file__)
+    for filename in ['test.txt', 'input.txt']:
+        if os.path.exists(f'{dir}/{filename}'):
+            with open(f'{dir}/{filename}') as f:
+                input = f.read()
+            print(f'== {filename} ==')
+            print(part1(input))
+            print(part2(input))

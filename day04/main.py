@@ -1,4 +1,4 @@
-import sys
+import os
 
 def part1(input: str) -> int:
     overlap = 0
@@ -27,7 +27,11 @@ def part2(input: str) -> int:
     return overlap
 
 if __name__ == '__main__':
-    with open(sys.argv[1]) as f:
-        input = f.read()
-        print(part1(input))
-        print(part2(input))
+    dir = os.path.dirname(__file__)
+    for filename in ['test.txt', 'input.txt']:
+        if os.path.exists(f'{dir}/{filename}'):
+            with open(f'{dir}/{filename}') as f:
+                input = f.read()
+            print(f'== {filename} ==')
+            print(part1(input))
+            print(part2(input))

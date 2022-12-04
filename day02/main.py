@@ -1,4 +1,4 @@
-import sys
+import os
 
 strategy_what_to_play = [
     [ 4, 8, 3 ],
@@ -23,7 +23,11 @@ def part2(input: str) -> int:
     return play(input.splitlines(), strategy_how_to_play)
 
 if __name__ == '__main__':
-    with open(sys.argv[1]) as f:
-        input = f.read()
-        print(part1(input))
-        print(part2(input))
+    dir = os.path.dirname(__file__)
+    for filename in ['test.txt', 'input.txt']:
+        if os.path.exists(f'{dir}/{filename}'):
+            with open(f'{dir}/{filename}') as f:
+                input = f.read()
+            print(f'== {filename} ==')
+            print(part1(input))
+            print(part2(input))
