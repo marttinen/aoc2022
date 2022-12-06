@@ -1,6 +1,6 @@
 import os
 
-def parse_creates_moves(input: str) -> list[list[str], list[int]]:
+def parse_crates_moves(input: str) -> list[list[str], list[int]]:
     crates_input, moves_input = input.split('\n\n')
     crates_input = crates_input.splitlines()
 
@@ -27,7 +27,7 @@ def parse_creates_moves(input: str) -> list[list[str], list[int]]:
     return crates, moves
 
 def part1(input: str) -> str:
-    crates, moves = parse_creates_moves(input)
+    crates, moves = parse_crates_moves(input)
 
     for move in moves:
         count, source, target = move
@@ -43,7 +43,7 @@ def part1(input: str) -> str:
     return result
 
 def part2(input: str) -> str:
-    crates, moves = parse_creates_moves(input)
+    crates, moves = parse_crates_moves(input)
 
     for move in moves:
         count, source, target = move
