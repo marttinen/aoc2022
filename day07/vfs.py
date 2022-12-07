@@ -2,18 +2,14 @@
 def build_vfs(input: str):
     cur = root = VfsDir(None, '/')
     for line in input.splitlines():
-        cmd = line.replace('$ ', '').split(' ')
-        if cmd[0] == 'cd':
-            if cmd[1] == '/':
-                cur = root
-            elif cmd[1] == '..':
-                cur = cur.parent
-            else:
-                cur = cur.get_dir(cmd[1])
-        elif cmd[0] == 'dir':
-            cur.add_dir(cmd[1])
-        elif cmd[0].isnumeric():
-            cur.add_file(cmd[1], int(cmd[0]))
+        match line.split(' '):
+            case ['$', 'ls']: pass
+            case ['$', 'cd', '/']: cur = root
+            case ['$', 'cd', '..']: cur = cur.parent
+            case ['$', 'cd', path]: cur = cur.get_dir(path)
+            case ['dir', path]: cur.dirs.append(VfsDir(cur, path))
+            case [size, name]: cur.files.append(VfsFile(cur, name, size))
+            case _: raise ValueError(f'unknown command {line}')
     return root
 
 class VfsDir:
@@ -23,21 +19,11 @@ class VfsDir:
         self.dirs: list['VfsDir'] = []
         self.files: list['VfsFile'] = []
 
-    def add_dir(self, path: str) -> 'VfsDir':
-        d = VfsDir(self, path)
-        self.dirs.append(d)
-        return d
-
     def get_dir(self, path) -> 'VfsDir':
         for d in self.dirs:
             if d.path == path:
                 return d
-        return None
-
-    def add_file(self, name: str, size: int) -> 'VfsFile':
-        f = VfsFile(self, name, size)
-        self.files.append(f)
-        return f
+        raise ValueError(path)
 
     def size(self) -> int:
         fsize = sum([f.size for f in self.files])
