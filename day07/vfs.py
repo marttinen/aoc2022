@@ -1,25 +1,20 @@
 
 def build_vfs(input: str):
     cur = root = VfsDir(None, '/')
-    for line in input.splitlines()[1:]:
+    for line in input.splitlines():
         cmd = line.replace('$ ', '').split(' ')
-        cur = run_command(root, cur, cmd)
+        if cmd[0] == 'cd':
+            if cmd[1] == '/':
+                cur = root
+            elif cmd[1] == '..':
+                cur = cur.parent
+            else:
+                cur = cur.get_dir(cmd[1])
+        elif cmd[0] == 'dir':
+            cur.add_dir(cmd[1])
+        elif cmd[0].isnumeric():
+            cur.add_file(cmd[1], int(cmd[0]))
     return root
-
-def run_command(root: 'VfsDir', cur: 'VfsDir', cmd: list[str]):
-    if cmd[0] == 'cd':
-        if cmd[1] == '/':
-            cur = root
-        elif cmd[1] == '..':
-            cur = cur.parent
-        else:
-            cur = cur.get_dir(cmd[1])
-    elif cmd[0] == 'dir':
-        cur.add_dir(cmd[1])
-    elif cmd[0].isnumeric():
-        cur.add_file(cmd[1], int(cmd[0]))
-
-    return cur
 
 class VfsDir:
     def __init__(self, parent: 'VfsDir', path: str) -> None:
@@ -49,17 +44,13 @@ class VfsDir:
         dsize = sum([d.size() for d in self.dirs])
         return fsize + dsize
 
-    def size_list(self, sizes: list[int] = []) -> list[int]:
+    def size_list(self, sizes: list[int]) -> list[int]:
         sizes.append(self.size())
         for d in self.dirs:
             d.size_list(sizes)
         return sizes
 
 class VfsFile:
-    dir: VfsDir
-    name: str
-    size: int
-
     def __init__(self, dir: VfsDir, name: str, size: int) -> None:
         self.dir = dir
         self.name = name

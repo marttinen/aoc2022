@@ -3,7 +3,7 @@ import vfs
 
 def part1(input: str) -> int:
     root = vfs.build_vfs(input)
-    sizes = root.size_list()
+    sizes = root.size_list([])
 
     return sum([s for s in sizes if s<100000])
 
