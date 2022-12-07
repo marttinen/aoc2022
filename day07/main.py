@@ -8,7 +8,20 @@ def part1(input: str) -> int:
     return sum([s for s in sizes if s<100000])
 
 def part2(input: str) -> int:
-    return 0
+    root = vfs.build_vfs(input)
+    unused_space = 70_000_000 - root.size()
+    required_space = 30_000_000 - unused_space
+
+    print(f'unused_space:   {unused_space}')
+    print(f'required_space: {required_space}')
+
+    sizes = root.size_list([])
+    smallest = root.size()
+    for s in sizes:
+        if s > required_space and s < smallest:
+            smallest = s
+
+    return smallest
 
 if __name__ == '__main__':
     dir = os.path.dirname(__file__)
