@@ -1,53 +1,54 @@
 import os
 
 def part1(input: str) -> int:
-    signals = []
-    cycle = 0
+    cycle = 1
     regx = 1
+    signals = []
 
     def tick():
-        nonlocal cycle
-        cycle += 1
+        nonlocal cycle, signals
         if (cycle + 20) % 40 == 0:
             signals.append(cycle * regx)
+        cycle += 1
 
     for command in input.splitlines():
-        match command.split(' '):
-            case ['noop']:
-                tick()
-
-            case ['addx', x]:
-                tick()
-                tick()
-                regx += int(x)
+        if command == 'noop':
+            tick()
+        elif command[0:4] == 'addx':
+            tick()
+            tick()
+            regx += int(command[len('addx'):])
+        else:
+            print(f'unknown command {command}')
 
     return sum(signals)
 
 def part2(input: str) -> str:
-    cycle = 0
+    cycle = 1
     regx = 1
     crt = ''
 
     def tick():
         nonlocal cycle, crt
-        cycle += 1
 
-        if cycle % 40 == 0:
-            crt += '\n'
-        elif cycle % 40 in [regx-1, regx, regx+1]:
+        if (cycle-1) % 40 in [regx-1, regx, regx+1]:
             crt += '#'
         else:
             crt += '.'
+        if cycle % 40 == 0:
+            crt += '\n'
+
+        cycle += 1
 
     for command in input.splitlines():
-        match command.split(' '):
-            case ['noop']:
-                tick()
-
-            case ['addx', x]:
-                tick()
-                regx += int(x)
-                tick()
+        if command == 'noop':
+            tick()
+        elif command[0:4] == 'addx':
+            tick()
+            tick()
+            regx += int(command[len('addx'):])
+        else:
+            print(f'unknown command {command}')
 
     return crt
 
